@@ -1,0 +1,108 @@
+@keyframes aparecerLogo {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 25;
+    }
+    50% {
+        opacity: 50;
+    }
+    75% {
+        opacity: 75;
+    }
+    100% {
+        opacity: 100;
+    }
+}
+
+@keyframes aparecerLetras {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 15;
+    }
+
+    60% {
+        opacity: 40;
+    }
+
+    70% {
+        opacity: 50;
+    }
+
+    80% {
+        opacity: 70;
+    }
+
+    90% {
+        opacity: 90;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@keyframes parpadear {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 45;
+    }
+    50% {
+        opacity: 90;
+    }
+    75% {
+        opacity: 45;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.efectoAparecerLogo {
+    animation-name: aparecerLogo;
+    animation-duration: 15s;
+}
+
+.efectoAparecerLetras {
+    animation-name: aparecerLetras;
+    animation-duration: 10s;
+}
+
+.parpadear {
+    animation-name: parpadear;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.avatarFlotante {
+    margin-top: 50px;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+    transform: translatey(0px);
+    animation: float 6s ease-in-out infinite;
+}
+
+
+@keyframes float {
+    0% {
+        box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+        transform: translatey(0px);
+    }
+    50% {
+        box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+        transform: translatey(-20px);
+    }
+    100% {
+        box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+        transform: translatey(0px);
+    }
+}

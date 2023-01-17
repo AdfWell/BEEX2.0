@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BEEX</title>
+    <link rel="shortcut icon" href="assets/logo_jagger_2.png"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../js/Carta.js"></script>
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap.rtl.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.rtl.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.rtl.css">
+    <link rel="stylesheet" href="../css/bootstrap-utilities.css">
+    <link rel="stylesheet" href="../css/bootstrap-utilities.rtl.css">
+    <script src="../js/bootstrap.bundle.js"></script>
+    <script src="../js/bootstrap.esm.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+
+<style>
+    .centrar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .text-container {
+        height: 200px;
+        width: 400px;
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    .text-container span {
+        display: block;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .contorno {
+        width: 355px;
+        height: 500px;
+        border: solid;
+        border-radius: 20px;
+    }
+
+    .interior_contorno {
+        display: block;
+        width: 350px;
+        height: 500px;
+        border-radius: 25px;
+    }
+
+    @font-face {
+        font-family: "BebasNeue";
+        src: url("font/BebasNeue-Regular.otf");
+    }
+
+    .fontBebasNeue {
+        font-family: BebasNeue;
+    }
+
+    .button1 {
+        background-color: black;
+        color: #FF5600;
+        border: 2px solid #FF5600;
+    }
+</style>
+<script>
+
+    let cartasArray = []
+    let contador = 0
+
+    document.addEventListener("DOMContentLoaded", function () {
+        AOS.init();
+        readTextFile("assets/cartas.json", function (text) {
+            let cartas = JSON.parse(text);
+            for (let i in cartas) {
+                cartasArray.push(new Carta(cartas[i].reto, cartas[i].color))
+            }
+            shuffle(cartasArray)
+        });
+    })
+
+    function readTextFile(file, callback) {
+        let rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                callback(rawFile.responseText);
+            }
+        }
+        rawFile.send(null);
+    }
+
+    function avanzar() {
+        let reto = document.getElementById("reto")
+
+        if (contador + 1 === cartasArray.length) {
+            contador = 0
+        }
+
+        let carta = cartasArray[contador + 1]
+
+        reto.innerHTML = carta.reto
+        ponerColor(carta.color)
+
+        contador++
+    }
+
+    function retroceder() {
+        if (contador !== 0) {
+            let reto = document.getElementById("reto")
+            let carta = cartasArray[contador - 1]
+            reto.innerHTML = carta.reto
+            ponerColor(carta.color)
+
+            contador--
+        }
+    }
+
+    function ponerColor(c) {
+        let contorno = document.getElementById("contorno")
+        let reto = document.getElementById("reto")
+
+        if (c === "#FF5600") {
+            contorno.classList.add("parpadear")
+        } else {
+            contorno.classList.remove("parpadear")
+        }
+
+        reto.style.color = c
+        contorno.style.color = c
+    }
+
+    function empezarJuego() {
+        document.getElementById("letras").style.display = 'none'
+        document.getElementById("cartaParent").style.display = ''
+
+        let reto = document.getElementById("reto")
+        let carta = cartasArray[0]
+
+        reto.innerHTML = carta.reto
+        reto.style.color = carta.color
+
+        ponerColor(carta.color)
+    }
+
+    function shuffle(array) {
+        array.sort(() => Math.random() - 0.5);
+    }
+</script>
+
+<body class="bg-black">
+<div>
+    <div class="centrar efectoAparecerLogo">
+        <img class="avatarFlotante" src="assets/logo_jagger_2.png">
+    </div>
+    <div id="letras" style="color: #FF5600; flex-direction: column;" class="centrar efectoAparecerLetras">
+        <h1>NO APTO</h1>
+        <h1>PARA</h1>
+        <h1>MONJAS,</h1>
+        <h1>CURAS,</h1>
+        <h1>MUERMOS</h1>
+        <h1>E HIJOS</h1>
+        <h1>DE PAPÁ</h1>
+        <br/>
+        <button onclick="empezarJuego()" class="parpadear button1"> PULSAR PARA EMPEZAR</button>
+    </div>
+
+    <div id="cartaParent" style="display: none">
+        <div id="carta" class="centrar" style="margin-top: 25px">
+            <button onclick="retroceder()" id="botonAtras" style="margin-right: 50px; border: 0" class="button1">
+                <img src="assets/Diseno_sin_titulo__1_-removebg-preview.png" width="150px" height="150px">
+            </button>
+            <div class="contorno " id="contorno">
+                <div class="interior_contorno text-container" id="interiorContorno">
+                    <span class="fontBebasNeue" style="font-size: 35px;margin-right: 15px; margin-left: 15px"
+                          id="reto"></span>
+                </div>
+            </div>
+            <button onclick="avanzar()" id="botonAdelante" style="margin-left: 50px; border: 0" class="button1">
+                <img src="assets/Diseno_sin_titulo-removebg-preview.png" width="150px" height="150px">
+            </button>
+        </div>
+    </div>
+</div>
+<br/>
+<hr/>
+<br/>
+<br/>
+
+<div class="centrar">
+    <div data-aos="flip-up">
+        <div style="margin-top: 10px" class="centrar">
+            <h4 style="color: #E42F2A " class="fontBebasNeue">INSPIRADO EN: </h4>
+        </div>
+        <a href="https://www.mamutithegame.com/"><img src="assets/MAMUTI-MANUT-VERTICAL-1024x368.png" width="500px"></a>
+    </div>
+</div>
+<br/>
+<br/>
+</body>
+</html>
